@@ -1,11 +1,4 @@
-﻿/*
- * Creado por SharpDevelop.
- * Usuario: ianga
- * Fecha: 22/04/2023
- * Hora: 17:33
- * 
- * Para cambiar esta plantilla use Herramientas | Opciones | Codificación | Editar Encabezados Estándar
- */
+
 using System;
 using System.Collections;
 
