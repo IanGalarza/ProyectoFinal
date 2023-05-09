@@ -7,7 +7,7 @@ namespace proyecto
 	{
 		//atributos
 		private ArrayList listaObreros;
-		private int codigoDeObra;
+		private int codigoDeObra = 0;
 		
 		// constructor
 		public Grupo()
