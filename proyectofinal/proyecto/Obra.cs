@@ -65,10 +65,9 @@ namespace proyecto
 			get {return codigoInterno;}
 		}
 		
-		//metodo
-		
-		public double avanzarObra (int valor){
-			return avance += valor;
+		public double Avance{
+			set {avance = value;}
+			get {return avance;}
 		}
 	}
 }
