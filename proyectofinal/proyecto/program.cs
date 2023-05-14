@@ -8,10 +8,41 @@ namespace proyecto
 					public static void Main(string[] args)
 								
 								{
-						
+						//creacion empresa y grupos
 						Empresa emp;
-						bool bandera = false;
 						emp = new Empresa();
+						
+						Grupo uno = new Grupo();
+						Grupo dos = new Grupo();
+						Grupo tres = new Grupo();
+						Grupo cuatro = new Grupo();
+						Grupo cinco = new Grupo();
+						Grupo seis = new Grupo();
+						Grupo siete = new Grupo();
+						Grupo ocho = new Grupo();
+	
+						uno.NumeroGrupo = 1;
+						dos.NumeroGrupo = 2;
+						tres.NumeroGrupo = 3;
+						cuatro.NumeroGrupo = 4;
+						cinco.NumeroGrupo = 5;
+						seis.NumeroGrupo = 6;
+						siete.NumeroGrupo = 7;
+						ocho.NumeroGrupo = 8;
+						
+						emp.agregarGrupo(uno);
+						emp.agregarGrupo(dos);
+						emp.agregarGrupo(tres);
+						emp.agregarGrupo(cuatro);
+						emp.agregarGrupo(cinco);
+						emp.agregarGrupo(seis);
+						emp.agregarGrupo(siete);
+						emp.agregarGrupo(ocho);	
+						
+						//menu
+
+						bool bandera = false;
+
 						while (bandera == false )
 									{
 						Console.WriteLine("--------------------------------------------------------------");
@@ -37,6 +68,8 @@ namespace proyecto
 															verObreros(emp);
 															break;
 													case "4":
+															verObras(emp);
+															break;
 													case "5":
 													case "6":
 													case "7":
@@ -62,7 +95,7 @@ namespace proyecto
  						dni = int.Parse(Console.ReadLine());
  						Console.WriteLine("Ingrese el numero de legajo del obrero");
  						legajo = int.Parse(Console.ReadLine());
- 						Console.WriteLine ("Ingrese el numero de grupo al que se desea agregar al obrero");
+ 						Console.WriteLine ("Ingrese el numero de grupo (del 1 al 8)al que se desea agregar al obrero");
  						codigoGrupo = int.Parse(Console.ReadLine());
  						obr = new Obrero (nombre, apellido, cargo, dni, legajo, codigoGrupo);
  						
@@ -72,16 +105,13 @@ namespace proyecto
  							if (grp.NumeroGrupo == codigoGrupo){
  								existeGrupo = true;
  								grp.agregarObrero(obr);
+ 								Console.WriteLine("El obrero se agrego con exito");
  								break;
  							}
  						}
  						if (existeGrupo == false){
- 							Grupo grup = new Grupo();
- 							grup.NumeroGrupo = codigoGrupo;
- 							grup.agregarObrero(obr);
- 							emp.agregarGrupo(grup);
+ 							Console.WriteLine("El grupo ingresado no existe, intente nuevamente...");
  						}
- 						Console.WriteLine("El obrero se agrego con exito");
  						Console.WriteLine("Presione una tecla para continuar...");
  						Console.ReadKey();
 		}
@@ -124,6 +154,24 @@ namespace proyecto
 					}
 				}
 					Console.WriteLine("Presione una tecla para continuar...");
+					Console.ReadKey();
 			}
-	}
+					public static void verObras (Empresa emp){
+						for (int i = 0; i < emp.cantidadObras(); i++){
+							Obra proyec = emp.verObra(i);
+							Console.WriteLine("------------------------------------------");
+							Console.WriteLine("Nombre propietario:" + proyec.NombrePropietario);
+							Console.WriteLine("Dni del propietario:" + proyec.DniPropietario);
+							Console.WriteLine("codigo interno:" + proyec.CodigoInterno);
+							Console.WriteLine("Tipo de obra:" + proyec.TipoDeObra);
+							Console.WriteLine("Tiempo estimado:" + proyec.TiempoEstimado + " dias");
+							Console.WriteLine("Estado de avance:" + proyec.Avance + "%");
+							Console.WriteLine("Cantidad de grupos trabajando:" + proyec.GruposTrabajando);
+							Console.WriteLine("Costo:" + proyec.Costo);
+							Console.WriteLine("------------------------------------------");							
+						}
+						Console.WriteLine("Presione una tecla para continuar...");
+						Console.ReadKey();
+				}
+		}
 }
