@@ -37,7 +37,11 @@ namespace proyecto
 		public bool existeObra (Obra proyecto){
 			return listaObras.Contains(proyecto);
 		}
-	
+		
+		public Obra verObra (int valor){
+			return (Obra)this.listaObras[valor];
+		}
+
 		//metodos basicos relacionados con grupos
 		
 		public void agregarGrupo (Grupo equip){
@@ -58,6 +62,9 @@ namespace proyecto
 		
 		public ArrayList gruposIntegrados (){
 			return listaGrupos;
+		}
+		public Grupo verGrupo (int valor){
+			return (Grupo)this.listaGrupos[valor];
 		}
 	}
 }
