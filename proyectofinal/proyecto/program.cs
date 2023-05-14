@@ -28,10 +28,14 @@ namespace proyecto
 						string opcion = Console.ReadLine();
 										switch (opcion)
 												{
-													case "1":
-																break;
+												case "1": 	agregarObrero(emp);
+															break;
 													case "2":
+															eliminarObrero(emp);
+															break;
 													case "3":
+															verObreros(emp);
+															break;
 													case "4":
 													case "5":
 													case "6":
@@ -44,5 +48,82 @@ namespace proyecto
 						
 			}
 		}
+					public static void agregarObrero (Empresa emp){
+						string nombre, apellido, cargo;
+ 						int dni, legajo, codigoGrupo;
+ 						Obrero obr;
+ 						Console.WriteLine("Ingrese el nombre del obrero");
+ 						nombre = Console.ReadLine();
+ 						Console.WriteLine("Ingrese el apellido del obrero");
+ 						apellido = Console.ReadLine();
+ 						Console.WriteLine("Ingrese el cargo del obrero");
+ 						cargo = Console.ReadLine();
+ 						Console.WriteLine("Ingrese el dni del obrero");
+ 						dni = int.Parse(Console.ReadLine());
+ 						Console.WriteLine("Ingrese el numero de legajo del obrero");
+ 						legajo = int.Parse(Console.ReadLine());
+ 						Console.WriteLine ("Ingrese el numero de grupo al que se desea agregar al obrero");
+ 						codigoGrupo = int.Parse(Console.ReadLine());
+ 						obr = new Obrero (nombre, apellido, cargo, dni, legajo, codigoGrupo);
+ 						
+ 						bool existeGrupo = false;
+ 						
+ 						foreach(Grupo grp in emp.gruposIntegrados()){
+ 							if (grp.NumeroGrupo == codigoGrupo){
+ 								existeGrupo = true;
+ 								grp.agregarObrero(obr);
+ 								break;
+ 							}
+ 						}
+ 						if (existeGrupo == false){
+ 							Grupo grup = new Grupo();
+ 							grup.NumeroGrupo = codigoGrupo;
+ 							grup.agregarObrero(obr);
+ 							emp.agregarGrupo(grup);
+ 						}
+ 						Console.WriteLine("El obrero se agrego con exito");
+ 						Console.WriteLine("Presione una tecla para continuar...");
+ 						Console.ReadKey();
+		}
+					
+					public static void eliminarObrero (Empresa emp){
+						int dni;
+						bool existe = false;
+						Console.WriteLine("Ingrese el dni del obrero a eliminar.");
+						dni = int.Parse(Console.ReadLine());
+						for (int i = 0; i < emp.cantidadGrupos();i++){
+							Grupo grp = emp.verGrupo(i);
+							foreach (Obrero obr in grp.miembrosGrupos()) {
+								if(obr.Dni == dni){
+									existe = true;
+									grp.eliminarObrero(obr);
+									Console.WriteLine("Se elimino el obrero con exito");
+									break;
+								}
+							}
+						}
+						if (existe == false){
+							Console.WriteLine("El dni ingresado no pertenece a ningun obrero, intentelo nuevamente...");
+						}
+						Console.WriteLine("Presione una tecla para continuar...");
+						Console.ReadKey();
+					}
+					
+					public static void verObreros (Empresa emp){
+						for (int i = 0; i < emp.cantidadGrupos();i++){
+							Grupo grp = emp.verGrupo(i);
+							foreach (Obrero obr in grp.miembrosGrupos()) {
+								Console.WriteLine("------------------------------------------");
+								Console.WriteLine("Nombre:" + obr.Nombre);
+								Console.WriteLine("Apellido:" + obr.Nombre);
+								Console.WriteLine("Cargo:" + obr.Cargo);
+								Console.WriteLine("Dni:" + obr.Dni);
+								Console.WriteLine("Legajo:" + obr.Legajo);
+								Console.WriteLine("Grupo:" + obr.CodigoGrupo);
+								Console.WriteLine("------------------------------------------");
+					}
+				}
+					Console.WriteLine("Presione una tecla para continuar...");
+			}
 	}
 }
