@@ -34,6 +34,9 @@ namespace proyecto
 		public int cantidadObreros (){
 			return listaObreros.Count;
 		}
+		public Obrero verObrero (int valor){
+			return (Obrero)this.listaObreros[valor];
+		}
 		public int CodigoDeObra{
 			set { codigoDeObra = value;
 		}
