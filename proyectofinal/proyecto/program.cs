@@ -1,6 +1,6 @@
 
 using System;
-
+using System.Collections;
 namespace proyecto
 {
 	class Program	{
@@ -39,6 +39,9 @@ namespace proyecto
 						emp.agregarGrupo(siete);
 						emp.agregarGrupo(ocho);	
 						
+						ArrayList obrasFinalizadas = new ArrayList();
+						int valor = 0;
+						
 						//menu
 
 						bool bandera = false;
@@ -60,23 +63,49 @@ namespace proyecto
 										switch (opcion)
 												{
 												case "1": 	agregarObrero(emp);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
 															break;
 													case "2":
 															eliminarObrero(emp);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
 															break;
 													case "3":
 															verObreros(emp);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
 															break;
 													case "4":
 															verObras(emp);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
 															break;
 													case "5":
+															valor = valor + 1;
+															agregarObra (emp, valor);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
+															break;
 													case "6":
+															modificarAvance(emp, obrasFinalizadas);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
+															break;
 													case "7":
-													case "8": 	bandera = true;
-																Console.WriteLine("Saliendo del programa...");
-																Console.ReadKey(true);
-																break;
+															verObrasFinalizadas(obrasFinalizadas);
+															Console.WriteLine("Presione una tecla para continuar...");
+															Console.ReadKey();
+															break;
+													case "8": 	
+															bandera = true;
+															Console.WriteLine("Saliendo del programa...");
+															Console.ReadKey();
+															break;
+														default:
+															Console.WriteLine("No se ingreso ninguna opcion valida, intente nuevamente...");
+															Console.ReadKey();
+															break;
 					}
 						
 			}
@@ -135,8 +164,7 @@ namespace proyecto
 						if (existe == false){
 							Console.WriteLine("El dni ingresado no pertenece a ningun obrero, intentelo nuevamente...");
 						}
-						Console.WriteLine("Presione una tecla para continuar...");
-						Console.ReadKey();
+
 					}
 					
 					public static void verObreros (Empresa emp){
@@ -153,25 +181,118 @@ namespace proyecto
 								Console.WriteLine("------------------------------------------");
 					}
 				}
-					Console.WriteLine("Presione una tecla para continuar...");
-					Console.ReadKey();
+
 			}
 					public static void verObras (Empresa emp){
 						for (int i = 0; i < emp.cantidadObras(); i++){
 							Obra proyec = emp.verObra(i);
 							Console.WriteLine("------------------------------------------");
-							Console.WriteLine("Nombre propietario:" + proyec.NombrePropietario);
-							Console.WriteLine("Dni del propietario:" + proyec.DniPropietario);
-							Console.WriteLine("codigo interno:" + proyec.CodigoInterno);
-							Console.WriteLine("Tipo de obra:" + proyec.TipoDeObra);
-							Console.WriteLine("Tiempo estimado:" + proyec.TiempoEstimado + " dias");
-							Console.WriteLine("Estado de avance:" + proyec.Avance + "%");
-							Console.WriteLine("Cantidad de grupos trabajando:" + proyec.GruposTrabajando);
-							Console.WriteLine("Costo:" + proyec.Costo);
+							Console.WriteLine("Nombre propietario: " + proyec.NombrePropietario);
+							Console.WriteLine("Dni del propietario: " + proyec.DniPropietario);
+							Console.WriteLine("codigo interno: " + proyec.CodigoInterno);
+							Console.WriteLine("Tipo de obra: " + proyec.TipoDeObra);
+							Console.WriteLine("Tiempo estimado: " + proyec.TiempoEstimado + " dias");
+							Console.WriteLine("Estado de avance: " + proyec.Avance + "%");
+							Console.WriteLine("Grupo trabajando: " + proyec.GruposTrabajando);
+							Console.WriteLine("Costo: " + proyec.Costo);
 							Console.WriteLine("------------------------------------------");							
 						}
-						Console.WriteLine("Presione una tecla para continuar...");
-						Console.ReadKey();
+
 				}
+					public static void agregarObra (Empresa emp, int val){
+						string propietario, tipoObra, tiempo, opcion;
+						int dni_Propietario, costoObra, codigoInterno, grupotrabajando;
+						double progreso = 0;
+						bool banderaOpcion = false;
+						grupotrabajando = 0;
+						codigoInterno = val;
+						Obra proyecto;
+						Console.WriteLine("Ingrese el nombre del propietario");
+						propietario = Console.ReadLine();
+						Console.WriteLine("Ingrese el dni del propietario");
+						dni_Propietario = int.Parse(Console.ReadLine());
+						Console.WriteLine("Ingrese el tipo de obra");
+						Console.WriteLine("1-Construcción");
+						Console.WriteLine("2-Remodelación");
+						Console.WriteLine("3-Ampliación");
+						opcion = Console.ReadLine();
+						while (banderaOpcion == false)
+						switch (opcion) {
+							case "1":
+								banderaOpcion = true;
+								tipoObra = "Construcción";
+								break;
+							case "2":
+								banderaOpcion = true;
+								tipoObra = "Remodelación";
+								break;
+							case "3":
+								banderaOpcion = true;
+								tipoObra = "Ampliación";
+								break;
+							default:
+								Console.WriteLine ("No se ingreso ninguna opcion valida, intente nuevamente");
+								break;
+						}
+						Console.WriteLine("Ingrese la cantidad de dias esperados de ejecucion");
+						tiempo = Console.ReadLine();
+						Console.WriteLine("Ingrese el costo de obra");
+						costoObra = int.Parse(Console.ReadLine());
+						
+						proyecto = new Obra (progreso, tipoObra, tiempo, grupotrabajando, costoObra, propietario, dni_Propietario, val);
+						int contador = 0;
+						
+						for (int i = 0; i < emp.cantidadGrupos(); i++){
+							Grupo grp = emp.verGrupo(i);
+							if (grp.CodigoDeObra == 0){
+								contador ++;
+								
+							}
+						}
+						
+						
+						
+						                    
+					}
+					public static void modificarAvance (Empresa emp, ArrayList list){
+						int codigo, valorAvance;
+						bool existe = false;
+						verObras(emp);
+						Console.WriteLine("Ingrese el codigo interno de la obra a modificar");
+						codigo = int.Parse(Console.ReadLine());
+						
+						foreach (Obra proyecto in emp.todasObras()){
+							if (codigo == proyecto.CodigoInterno){
+								Console.WriteLine("Ingrese el progreso de avance de la obra");
+								valorAvance = int.Parse(Console.ReadLine());
+								proyecto.Avance += valorAvance;
+								existe = true;
+								if (proyecto.Avance >= 100){
+									list.Add(proyecto);
+									emp.eliminarObra(proyecto);
+								}
+								Console.WriteLine("Se modifico el estado de obra con exito");
+							}
+							
+						}
+						if (existe == false){
+							Console.WriteLine("El codigo de obra ingresado no se encuentra, intentelo nuevamente...");
+						}
+					}
+					public static void verObrasFinalizadas (ArrayList list){
+						foreach (Obra proyecto in list){
+						proyecto.Avance = 100;
+							Console.WriteLine("------------------------------------------");
+							Console.WriteLine("Nombre propietario:" + proyecto.NombrePropietario);
+							Console.WriteLine("Dni del propietario:" + proyecto.DniPropietario);
+							Console.WriteLine("codigo interno:" + proyecto.CodigoInterno);
+							Console.WriteLine("Tipo de obra:" + proyecto.TipoDeObra);
+							Console.WriteLine("Tiempo estimado:" + proyecto.TiempoEstimado + " dias");
+							Console.WriteLine("Estado de avance:" + proyecto.Avance + "%");
+							Console.WriteLine("Cantidad de grupos trabajando:" + proyecto.GruposTrabajando);
+							Console.WriteLine("Costo:" + proyecto.Costo);
+							Console.WriteLine("------------------------------------------");	
+						}
+					}
 		}
 }
