@@ -110,6 +110,7 @@ namespace proyecto
 						
 			}
 		}
+					
 					public static void agregarObrero (Empresa emp){
 						string nombre, apellido, cargo;
  						int dni, legajo, codigoGrupo;
@@ -183,6 +184,7 @@ namespace proyecto
 				}
 
 			}
+					
 					public static void verObras (Empresa emp){
 						for (int i = 0; i < emp.cantidadObras(); i++){
 							Obra proyec = emp.verObra(i);
@@ -199,11 +201,10 @@ namespace proyecto
 						}
 
 				}
+					
 					public static void agregarObra (Empresa emp, int val){
-						string propietario, tipoObra, tiempo, opcion;
+						string propietario, tipo_Obra, tiempo;
 						int dni_Propietario, costoObra, codigoInterno, grupotrabajando;
-						double progreso = 0;
-						bool banderaOpcion = false;
 						grupotrabajando = 0;
 						codigoInterno = val;
 						Obra proyecto;
@@ -212,48 +213,51 @@ namespace proyecto
 						Console.WriteLine("Ingrese el dni del propietario");
 						dni_Propietario = int.Parse(Console.ReadLine());
 						Console.WriteLine("Ingrese el tipo de obra");
-						Console.WriteLine("1-Construcción");
-						Console.WriteLine("2-Remodelación");
-						Console.WriteLine("3-Ampliación");
-						opcion = Console.ReadLine();
-						while (banderaOpcion == false)
-						switch (opcion) {
-							case "1":
-								banderaOpcion = true;
-								tipoObra = "Construcción";
-								break;
-							case "2":
-								banderaOpcion = true;
-								tipoObra = "Remodelación";
-								break;
-							case "3":
-								banderaOpcion = true;
-								tipoObra = "Ampliación";
-								break;
-							default:
-								Console.WriteLine ("No se ingreso ninguna opcion valida, intente nuevamente");
-								break;
-						}
+						tipo_Obra = Console.ReadLine();
 						Console.WriteLine("Ingrese la cantidad de dias esperados de ejecucion");
 						tiempo = Console.ReadLine();
 						Console.WriteLine("Ingrese el costo de obra");
 						costoObra = int.Parse(Console.ReadLine());
 						
-						proyecto = new Obra (progreso, tipoObra, tiempo, grupotrabajando, costoObra, propietario, dni_Propietario, val);
+						proyecto = new Obra ();
+						
+						proyecto.CodigoInterno = val;
+						proyecto.NombrePropietario = propietario;
+						proyecto.DniPropietario = dni_Propietario;
+						proyecto.GruposTrabajando = grupotrabajando;
+						proyecto.Costo = costoObra;
+						proyecto.TipoDeObra = tipo_Obra;
+						proyecto.TiempoEstimado = tiempo;
+						
 						int contador = 0;
 						
-						for (int i = 0; i < emp.cantidadGrupos(); i++){
-							Grupo grp = emp.verGrupo(i);
-							if (grp.CodigoDeObra == 0){
-								contador ++;
-								
+							for (int i = 0; i < emp.cantidadGrupos();i++){
+								Grupo grp = emp.verGrupo (i);
+								if (grp.CodigoDeObra == 0){
+									contador ++;
+								}
 							}
+						try {
+							if (contador > 0){
+								foreach (Grupo grup in emp.gruposIntegrados()){
+									if (grup.CodigoDeObra == 0){
+										grup.CodigoDeObra = val;
+										proyecto.GruposTrabajando = grup.NumeroGrupo;
+										emp.agregarObra(proyecto);
+										break;
+									}
+								}
+							}
+							else
+								throw new SinGrupos();
+							
 						}
-						
-						
-						
+						catch(SinGrupos){
+							Console.WriteLine ("No hay grupos disponibles");
+						}
 						                    
-					}
+				}
+					
 					public static void modificarAvance (Empresa emp, ArrayList list){
 						int codigo, valorAvance;
 						bool existe = false;
