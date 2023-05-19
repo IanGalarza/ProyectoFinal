@@ -4,9 +4,7 @@ using System.Collections;
 
 namespace proyecto
 {
-	/// <summary>
-	/// Description of obrero.
-	/// </summary>
+
 	public class Obrero
 	{
 		private string nombre, apellido, cargo;
