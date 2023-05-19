@@ -249,6 +249,9 @@ namespace proyecto
 										grup.CodigoDeObra = val;
 										proyecto.GruposTrabajando = grup.NumeroGrupo;
 										emp.agregarObra(proyecto);
+										Console.WriteLine("------------------------------------------");
+										Console.WriteLine("Se Agrego la obra con exito");
+										Console.WriteLine("------------------------------------------");
 										break;
 									}
 								}
@@ -288,6 +291,7 @@ namespace proyecto
 									}
 									break;
 								}
+								Console.WriteLine("------------------------------------------");
 								Console.WriteLine("Se modifico el estado de obra con exito");
 							}
 							
