@@ -8,7 +8,7 @@ namespace proyecto
 		//atributos
 		private ArrayList listaObreros;
 		private int codigoDeObra = 0;
-		
+		private int numeroGrupo;
 		// constructor
 		public Grupo()
 		{
@@ -34,14 +34,25 @@ namespace proyecto
 		public int cantidadObreros (){
 			return listaObreros.Count;
 		}
+		
 		public Obrero verObrero (int valor){
 			return (Obrero)this.listaObreros[valor];
 		}
+		
 		public int CodigoDeObra{
 			set { codigoDeObra = value;
 		}
 			get {
 				return codigoDeObra;}
-				}
+			}
+		
+		public int NumeroGrupo{
+			set{
+				numeroGrupo = value;
+			}
+			get {
+				return numeroGrupo;
+			}
 		}	
 	}
+}
