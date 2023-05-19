@@ -270,7 +270,7 @@ namespace proyecto
 					public static void modificarAvance (Empresa emp){
 						int codigo, valorAvance;
 						bool existe = false;
-						verObras(emp);
+						verObras(emp); //muestra las obras en ejecucion para que el usuario pueda ingresar su codigo interno
 						Console.WriteLine("Ingrese el codigo interno de la obra a modificar:");
 						codigo = int.Parse(Console.ReadLine());
 						
