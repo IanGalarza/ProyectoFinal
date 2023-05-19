@@ -65,8 +65,8 @@ namespace proyecto
 			get {return codigoInterno;}
 		}
 		
-		public double Avance{
-			set {avance = value;}
+		public double Avance {
+			set{avance = value;}
 			get {return avance;}
 		}
 	}
