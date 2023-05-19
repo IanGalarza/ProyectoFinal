@@ -39,13 +39,13 @@ namespace proyecto
 						emp.agregarGrupo(siete);
 						emp.agregarGrupo(ocho);	
 						
-						ArrayList obrasFinalizadas = new ArrayList();
-						int valor = 0;
+
 						
 						//menu
 
 						bool bandera = false;
-
+						int valor = 0;
+						
 						while (bandera == false )
 									{
 						Console.WriteLine("--------------------------------------------------------------");
@@ -88,12 +88,12 @@ namespace proyecto
 															Console.ReadKey();
 															break;
 													case "6":
-															modificarAvance(emp, obrasFinalizadas);
+															modificarAvance(emp);
 															Console.WriteLine("Presione una tecla para continuar...");
 															Console.ReadKey();
 															break;
 													case "7":
-															verObrasFinalizadas(obrasFinalizadas);
+															verObrasFinalizadas(emp);
 															Console.WriteLine("Presione una tecla para continuar...");
 															Console.ReadKey();
 															break;
@@ -110,22 +110,23 @@ namespace proyecto
 						
 			}
 		}
+					//funcion para agregar un nuevo obrero a la empresa
 					
 					public static void agregarObrero (Empresa emp){
 						string nombre, apellido, cargo;
  						int dni, legajo, codigoGrupo;
  						Obrero obr;
- 						Console.WriteLine("Ingrese el nombre del obrero");
+ 						Console.WriteLine("Ingrese el nombre del obrero:");
  						nombre = Console.ReadLine();
- 						Console.WriteLine("Ingrese el apellido del obrero");
+ 						Console.WriteLine("Ingrese el apellido del obrero:");
  						apellido = Console.ReadLine();
- 						Console.WriteLine("Ingrese el cargo del obrero");
+ 						Console.WriteLine("Ingrese el cargo del obrero:");
  						cargo = Console.ReadLine();
- 						Console.WriteLine("Ingrese el dni del obrero");
+ 						Console.WriteLine("Ingrese el dni del obrero:");
  						dni = int.Parse(Console.ReadLine());
- 						Console.WriteLine("Ingrese el numero de legajo del obrero");
+ 						Console.WriteLine("Ingrese el numero de legajo del obrero:");
  						legajo = int.Parse(Console.ReadLine());
- 						Console.WriteLine ("Ingrese el numero de grupo (del 1 al 8)al que se desea agregar al obrero");
+ 						Console.WriteLine ("Ingrese el numero de grupo (del 1 al 8)al que se desea agregar al obrero:");
  						codigoGrupo = int.Parse(Console.ReadLine());
  						obr = new Obrero (nombre, apellido, cargo, dni, legajo, codigoGrupo);
  						
@@ -142,9 +143,9 @@ namespace proyecto
  						if (existeGrupo == false){
  							Console.WriteLine("El grupo ingresado no existe, intente nuevamente...");
  						}
- 						Console.WriteLine("Presione una tecla para continuar...");
- 						Console.ReadKey();
 		}
+					
+					//funcion para eliminar un obrero de la empresa
 					
 					public static void eliminarObrero (Empresa emp){
 						int dni;
@@ -168,6 +169,8 @@ namespace proyecto
 
 					}
 					
+					//funcion para ver a todos los obreros de la empresa
+					
 					public static void verObreros (Empresa emp){
 						for (int i = 0; i < emp.cantidadGrupos();i++){
 							Grupo grp = emp.verGrupo(i);
@@ -184,6 +187,7 @@ namespace proyecto
 				}
 
 			}
+					//funcion para ver el total de obras en progreso de la empresa
 					
 					public static void verObras (Empresa emp){
 						for (int i = 0; i < emp.cantidadObras(); i++){
@@ -201,6 +205,7 @@ namespace proyecto
 						}
 
 				}
+					//funcion para agregar una nueva obra y asignarle automaticamente un grupo, si no hay grupos disponibles se levanta una excepcion
 					
 					public static void agregarObra (Empresa emp, int val){
 						string propietario, tipo_Obra, tiempo;
@@ -208,15 +213,15 @@ namespace proyecto
 						grupotrabajando = 0;
 						codigoInterno = val;
 						Obra proyecto;
-						Console.WriteLine("Ingrese el nombre del propietario");
+						Console.WriteLine("Ingrese el nombre del propietario:");
 						propietario = Console.ReadLine();
-						Console.WriteLine("Ingrese el dni del propietario");
+						Console.WriteLine("Ingrese el dni del propietario:");
 						dni_Propietario = int.Parse(Console.ReadLine());
-						Console.WriteLine("Ingrese el tipo de obra");
+						Console.WriteLine("Ingrese el tipo de obra:");
 						tipo_Obra = Console.ReadLine();
-						Console.WriteLine("Ingrese la cantidad de dias esperados de ejecucion");
+						Console.WriteLine("Ingrese la cantidad de dias esperados de ejecucion:");
 						tiempo = Console.ReadLine();
-						Console.WriteLine("Ingrese el costo de obra");
+						Console.WriteLine("Ingrese el costo de obra:");
 						costoObra = int.Parse(Console.ReadLine());
 						
 						proyecto = new Obra ();
@@ -257,23 +262,31 @@ namespace proyecto
 						}
 						                    
 				}
+					//funcion para modificar el avance, y si supera el 100%, se retira de obras en progreso y se libera su grupo
 					
-					public static void modificarAvance (Empresa emp, ArrayList list){
+					public static void modificarAvance (Empresa emp){
 						int codigo, valorAvance;
 						bool existe = false;
 						verObras(emp);
-						Console.WriteLine("Ingrese el codigo interno de la obra a modificar");
+						Console.WriteLine("Ingrese el codigo interno de la obra a modificar:");
 						codigo = int.Parse(Console.ReadLine());
 						
 						foreach (Obra proyecto in emp.todasObras()){
 							if (codigo == proyecto.CodigoInterno){
-								Console.WriteLine("Ingrese el progreso de avance de la obra");
+								Console.WriteLine("Ingrese el progreso de avance de la obra:");
 								valorAvance = int.Parse(Console.ReadLine());
 								proyecto.Avance += valorAvance;
 								existe = true;
 								if (proyecto.Avance >= 100){
-									list.Add(proyecto);
+									emp.agregarObraFinalizada(proyecto);
 									emp.eliminarObra(proyecto);
+									foreach (Grupo grp in emp.gruposIntegrados()){
+										if (grp.CodigoDeObra == codigo){
+											grp.CodigoDeObra = 0;
+											break;
+										}
+									}
+									break;
 								}
 								Console.WriteLine("Se modifico el estado de obra con exito");
 							}
@@ -283,8 +296,11 @@ namespace proyecto
 							Console.WriteLine("El codigo de obra ingresado no se encuentra, intentelo nuevamente...");
 						}
 					}
-					public static void verObrasFinalizadas (ArrayList list){
-						foreach (Obra proyecto in list){
+					
+					//Funcion que muestra todas las obras finalizadas de la empresa
+					
+					public static void verObrasFinalizadas (Empresa emp){
+						foreach (Obra proyecto in emp.todasObrasFinalizadas()){
 						proyecto.Avance = 100;
 							Console.WriteLine("------------------------------------------");
 							Console.WriteLine("Nombre propietario:" + proyecto.NombrePropietario);
@@ -293,7 +309,7 @@ namespace proyecto
 							Console.WriteLine("Tipo de obra:" + proyecto.TipoDeObra);
 							Console.WriteLine("Tiempo estimado:" + proyecto.TiempoEstimado + " dias");
 							Console.WriteLine("Estado de avance:" + proyecto.Avance + "%");
-							Console.WriteLine("Cantidad de grupos trabajando:" + proyecto.GruposTrabajando);
+							Console.WriteLine("grupo trabajando:" + proyecto.GruposTrabajando);
 							Console.WriteLine("Costo:" + proyecto.Costo);
 							Console.WriteLine("------------------------------------------");	
 						}
